@@ -85,10 +85,6 @@ serviceAccount:
 
 tolerations: []
 
-meta:
-  name: conjur-oss
-  namespace: conjur-operator
-
 caCrt: "{{ lookup ('file', 'MyCertificate.crt') }}"
 caKey: "{{ lookup ('file', 'MyKey.key') }}"
 certCrt: "{{ lookup ('file', 'MyCertificate.crt') }}"
