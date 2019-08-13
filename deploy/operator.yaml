@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: conjur-operator
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: conjur-operator
+  template:
+    metadata:
+      labels:
+        name: conjur-operator
+    spec:
+      serviceAccountName: conjur-operator
+      containers:
+        - name: ansible
+          command:
+          - /usr/local/bin/ao-logs
+          - /tmp/ansible-operator/runner
+          - stdout
+          # Replace this with the built image name
+          image: "quay.io/dhoover103/conjur-operator-test:v0.0.1"
+          imagePullPolicy: Always
+          volumeMounts:
+          - mountPath: /tmp/ansible-operator/runner
+            name: runner
+            readOnly: true
+        - name: operator
+          # Replace this with the built image name
+          image: "quay.io/dhoover103/conjur-operator-test:v0.0.1"
+          imagePullPolicy: Always
+          volumeMounts:
+          - mountPath: /tmp/ansible-operator/runner
+            name: runner
+          env:
+            - name: WATCH_NAMESPACE
+              value: ""
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: OPERATOR_NAME
+              value: "conjur-operator"
+      volumes:
+        - name: runner
+          emptyDir: {}

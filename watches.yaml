@@ -1,0 +1,5 @@
+---
+- version: v1alpha1
+  group: conjur.cyberark.com
+  kind: Conjur
+  role: /opt/ansible/roles/conjur

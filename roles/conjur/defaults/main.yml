@@ -1,0 +1,96 @@
+# Default values for conjur-oss.
+
+# Name of Conjur account to be created
+account: "default"
+
+
+
+affinity: {}
+
+# Conjur whitelisted authenticators. Maps as CONJUR_AUTHENTICATORS env variable.
+authenticators: authn
+
+# PostgreSQL connection string. If left blank, a PostgreSQL deployment is created.
+databaseUrl: "postgres://localhost"
+
+# Conjur data key, 32 byte base-64 encoded string for data encryption.
+# Generate one with `docker run --rm cyberark/conjur data-key generate`.
+dataKey: "ORMLVWUT2jQFJ6X+jfotnj72kz/QD5pKPoQOUugDU7I="
+
+deployment:
+  annotations: {}
+
+image:
+  pullPolicy: Always
+  repository: cyberark/conjur  # https://hub.docker.com/r/cyberark/conjur/
+  tag: latest
+
+nodeSelector: {}
+
+nginx:
+  image:
+    pullPolicy: IfNotPresent
+    repository: nginx          # https://hub.docker.com/_/nginx/
+    tag: '1.15'
+
+postgres:
+  image:
+    pullPolicy: IfNotPresent
+    repository: postgres       # https://hub.docker.com/_/postgres/
+    tag: '10.1'
+  persistentVolume:
+    create: true
+    size: 8Gi
+    storageClass:
+
+rbac:
+  create: true
+
+# Number of Conjur pods to run
+replicaCount: 1
+
+# We usually recommend not to specify default resources and to leave this as a conscious
+# choice for the user. This also increases chances charts run on environments with little
+# resources, such as Minikube. If you do want to specify resources, uncomment the following
+# lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+
+resources: {}
+# limits:
+#   cpu: 100m
+#   memory: 128Mi
+# requests:
+#   cpu: 100m
+#   memory: 128Mi
+
+service:
+  external:
+    annotations:
+      service.beta.kubernetes.io/aws-load-balancer-backend-protocol: tcp
+    enabled: true
+    port: 443
+
+  internal:
+    annotations: {}
+    port: 443
+    type: NodePort
+
+ssl:
+  expiration: 365 # days
+  hostname: "conjur.myorg.com"
+  altNames: []
+
+serviceAccount:
+  create: true
+  name: "conjur-operator"
+
+tolerations: []
+
+meta:
+  name: conjur-oss
+  namespace: conjur-operator
+
+caCrt: "{{ lookup ('file', 'MyCertificate.crt') }}"
+caKey: "{{ lookup ('file', 'MyKey.key') }}"
+certCrt: "{{ lookup ('file', 'MyCertificate.crt') }}"
+certKey: "{{ lookup ('file', 'MyKey.key') }}"
+

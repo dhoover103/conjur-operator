@@ -1,0 +1,7 @@
+apiVersion: conjur.cyberark.com/v1alpha1
+kind: Conjur
+metadata:
+  name: example-conjur
+spec:
+  # Add fields here
+  size: 3
