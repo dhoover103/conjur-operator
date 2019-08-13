@@ -15,7 +15,7 @@ databaseUrl: "postgres://localhost"
 
 # Conjur data key, 32 byte base-64 encoded string for data encryption.
 # Generate one with `docker run --rm cyberark/conjur data-key generate`.
-dataKey: "ORMLVWUT2jQFJ6X+jfotnj72kz/QD5pKPoQOUugDU7I="
+dataKey: ""
 
 deployment:
   annotations: {}
