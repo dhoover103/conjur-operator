@@ -1,6 +1,0 @@
-- name: test conjur role
-  ignore_errors: yes
-  hosts: all
-  roles:
-  - conjur 
-
